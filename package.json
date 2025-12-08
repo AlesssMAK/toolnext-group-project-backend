@@ -1,0 +1,32 @@
+{
+  "name": "toolnext-group-project-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlesssMAK/toolnext-group-project-backend.git"
+  },
+  "keywords": [],
+  "author": "Oleksii_Makovii <makovii88@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlesssMAK/toolnext-group-project-backend/issues"
+  },
+  "homepage": "https://github.com/AlesssMAK/toolnext-group-project-backend#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "nodemon": "^3.1.11"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
