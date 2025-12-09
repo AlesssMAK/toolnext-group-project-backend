@@ -19,3 +19,14 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+const categoriesRouter = require("./src/routes/categories.routes");
+
+app.use("/api/categories", categoriesRouter);
+
+const { seedCategories } = require("./src/db/seedCategories");
+
+mongoose.connection.once("open", async () => {
+  await seedCategories();
+});
+
