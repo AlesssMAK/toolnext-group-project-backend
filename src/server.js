@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import mongoose from "mongoose";
 import { logger } from './middleware/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
