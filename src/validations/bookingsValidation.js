@@ -1,21 +1,17 @@
 import { Joi, Segments } from 'celebrate';
 import moment from 'moment';
-// import { ORDER_STATUS } from '../constants/orderStatuses.js';
-// import { isValidObjectId } from 'mongoose';
-// const objectIdValidator = (value, helpers) => {
-//   return !isValidObjectId(value) ? helpers.message('Invalid id format') : value;
-// };
+import mongoose from 'mongoose';
+
+const objectIdValidator = (value, helpers) => {
+  if (!mongoose.Types.ObjectId.isValid(value)) {
+    return helpers.message('toolId must be a valid ObjectId');
+  }
+  return value;
+};
 
 export const createBookingSchema = {
   [Segments.BODY]: Joi.object({
-    tools: Joi.array()
-      .items(
-        Joi.object({
-          toolId: Joi.string().required(),
-        }),
-      )
-      .min(1)
-      .required(),
+    toolId: Joi.string().required().custom(objectIdValidator),
     userFirstname: Joi.string().min(2).max(50).required(),
     userLastname: Joi.string().min(2).max(50).required(),
     userPhone: Joi.string()

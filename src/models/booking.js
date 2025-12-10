@@ -3,15 +3,11 @@ import { BOOKING_STATUS } from '../constants/bookingStatuses.js';
 import { Counter } from './counter.js';
 const bookingSchema = new Schema(
   {
-    tools: [
-      {
-        toolId: {
-          type: Schema.Types.ObjectId,
-          ref: 'Tools',
-          required: true,
-        },
-      },
-    ],
+    toolId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Tools',
+      required: true,
+    },
     // userId: {
     //   type: Schema.Types.ObjectId,
     //   ref: 'User',
@@ -24,7 +20,7 @@ const bookingSchema = new Schema(
     status: {
       type: String,
       enum: BOOKING_STATUS,
-      default: 'not booked',
+      default: ' ',
     },
     userFirstname: { type: String, required: true },
     userLastname: { type: String, required: true },

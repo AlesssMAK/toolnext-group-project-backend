@@ -9,7 +9,7 @@ export const createBooking = async (req, res, next) => {
     return next(createHttpError(400, 'Phone is required'));
   }
   if (!toolId) {
-    return next(createHttpError(400, 'toolsId is required'));
+    return next(createHttpError(400, 'toolId is required'));
   }
   const tool = await Tool.findById(toolId);
   if (!tool) {
