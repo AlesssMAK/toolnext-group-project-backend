@@ -12,13 +12,13 @@ const bookingSchema = new Schema(
         },
       },
     ],
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: false,
-      default: null,
-    },
-    date: { type: String, required: true },
+    // userId: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'User',
+    //   required: false,
+    //   default: null,
+    // },
+    // date: { type: String, required: true },
 
     bookingNum: { type: String, index: true },
     status: {
