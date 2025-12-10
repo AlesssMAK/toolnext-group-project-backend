@@ -2,11 +2,11 @@
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
 
-import { User } from "../models/User.js";
-
+import { createSession, setSessionCookies  } from "../services/auth.js";
+import { User } from "../models/user.js";
 
 export const registerUser = async (req, res, next) => {
-  const { email, password} = req.body;
+  const { name, email, password} = req.body;
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -16,9 +16,20 @@ export const registerUser = async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = await User.create({
+    name,
     email,
     password: hashedPassword,
   });
 
-  res.status(201).json(newUser);
+   const newSession = await createSession(newUser._id);
+
+  setSessionCookies(res, newSession);
+
+  res.status(201).json({
+    user: {
+        id: newUser._id,
+        email: newUser.email,
+        name: newUser.name,
+      }
+  });
 };
