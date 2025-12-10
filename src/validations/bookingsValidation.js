@@ -14,7 +14,8 @@ export const createBookingSchema = {
           toolId: Joi.string().required(),
         }),
       )
-      .min(1).required,
+      .min(1)
+      .required(),
     userFirstname: Joi.string().min(2).max(50).required(),
     userLastname: Joi.string().min(2).max(50).required(),
     userPhone: Joi.string()
