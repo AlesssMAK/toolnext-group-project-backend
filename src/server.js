@@ -1,9 +1,11 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { logger } from './middleware/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errors } from 'celebrate';
+import { connectMongoDB } from './db/connectMongoDB.js';
 
 const app = express();
 const PORT = 3000;
