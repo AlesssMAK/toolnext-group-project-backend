@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import mongoose from "mongoose";
 import { logger } from './middleware/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
@@ -26,3 +27,14 @@ await connectMongoDB();
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+const categoriesRouter = require("./src/routes/categories.routes");
+
+app.use("/api/categories", categoriesRouter);
+
+const { seedCategories } = require("./src/db/seedCategories");
+
+mongoose.connection.once("open", async () => {
+  await seedCategories();
+});
+
