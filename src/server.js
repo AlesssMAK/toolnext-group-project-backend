@@ -7,12 +7,16 @@ import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errors } from 'celebrate';
 import { connectMongoDB } from './db/connectMongoDB.js';
 
+import authRoutes from './routes/authRoutes.js';
+
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
 app.use(logger);
+
+app.use(authRoutes);
 
 app.use(notFoundHandler);
 app.use(errors());
