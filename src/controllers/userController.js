@@ -110,7 +110,6 @@ export const getUserTools = async (req, res, next) => {
     const totalPages = Math.ceil(totalTools / perPage);
 
     res.status(200).json({
-      success: true,
       data: {
         tools,
         pagination: {
