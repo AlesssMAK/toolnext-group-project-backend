@@ -47,7 +47,7 @@ export const getToolsSchema = {
     [Segments.QUERY]: Joi.object({
         page: Joi.number().integer().min(1).default(1),
         limit: Joi.number().integer().min(5).max(20).default(10),
-        categoryId: Joi.alternatives([Joi.string(), Joi.number()]),
+        categories: Joi.string().trim().allow(''),
         search: Joi.string().trim().allow('')
     })
 };
