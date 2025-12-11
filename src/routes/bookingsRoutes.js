@@ -5,7 +5,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { createBooking } from '../controllers/bookingsController.js';
 const router = Router();
 router.post(
-  '/bookings',
+  '/api/bookings',
   celebrate(createBookingSchema),
   ctrlWrapper(createBooking),
 );
