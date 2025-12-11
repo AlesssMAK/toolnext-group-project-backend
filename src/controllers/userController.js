@@ -85,7 +85,7 @@ export const getUserTools = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 8;
 
     if (!isValidObjectId(userId)) {
       return next(createHttpError(400, 'Invalid user ID format'));
@@ -99,8 +99,8 @@ export const getUserTools = async (req, res, next) => {
     const skip = (page - 1) * limit;
 
     const tools = await Tool.find({ owner: userId })
-      .populate('category')
-      .populate('owner', 'username')
+      // .populate('category', 'name')
+      .populate('owner', 'name')
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });
