@@ -85,7 +85,7 @@ export const getUserTools = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 8;
+    const perPage = parseInt(req.query.perPage) || 8;
 
     if (!isValidObjectId(userId)) {
       return next(createHttpError(400, 'Invalid user ID format'));
@@ -96,18 +96,18 @@ export const getUserTools = async (req, res, next) => {
       return next(createHttpError(404, 'User not found'));
     }
 
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * perPage;
 
     const tools = await Tool.find({ owner: userId })
       // .populate('category', 'name')
       .populate('owner', 'name')
       .skip(skip)
-      .limit(limit)
+      .limit(perPage)
       .sort({ createdAt: -1 });
 
     const totalTools = await Tool.countDocuments({ owner: userId });
 
-    const totalPages = Math.ceil(totalTools / limit);
+    const totalPages = Math.ceil(totalTools / perPage);
 
     res.status(200).json({
       success: true,
@@ -115,7 +115,7 @@ export const getUserTools = async (req, res, next) => {
         tools,
         pagination: {
           currentPage: page,
-          limit,
+          perPage,
           totalTools,
           totalPages,
         },
