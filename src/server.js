@@ -7,7 +7,7 @@ import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errors } from 'celebrate';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import bookingsRoutes from './routes/bookingsRoutes.js';
-
+import feedbackRoutes from './routes/feedbackRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 
 const app = express();
@@ -17,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(logger);
 app.use(bookingsRoutes);
+app.use(feedbackRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
