@@ -8,6 +8,8 @@ import { errors } from 'celebrate';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import bookingsRoutes from './routes/bookingsRoutes.js';
 
+import authRoutes from './routes/authRoutes.js';
+
 const app = express();
 const PORT = 3000;
 
