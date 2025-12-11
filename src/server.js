@@ -9,6 +9,8 @@ import { errors } from 'celebrate';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import toolRouters from './routes/toolsRoutes.js';
 import bookingsRoutes from './routes/bookingsRoutes.js';
+import feedbackRoutes from './routes/feedbackRoutes.js';
+
 import authRoutes from './routes/authRoutes.js';
 
 
@@ -22,6 +24,7 @@ app.use(logger);
 app.use(toolRouters);
 app.use(bookingsRoutes);
 app.use(authRoutes);
+app.use(feedbackRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
