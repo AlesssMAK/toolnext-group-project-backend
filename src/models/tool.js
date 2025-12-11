@@ -13,7 +13,7 @@ const toolSchema = new Schema(
             required: true,
         },
         categoryId: {
-            required: true,
+            
         },
         description: {
             type: String,
