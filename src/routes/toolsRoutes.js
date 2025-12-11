@@ -5,6 +5,6 @@ import { getToolsSchema } from '../validations/toolsValidation.js';
 
 const toolRouters = Router();
 
-toolRouters.get("/api/tools",celebrate(getToolsSchema), getTools);
+toolRouters.get("/api/tools", celebrate(getToolsSchema), getTools);
 
 export default toolRouters;
