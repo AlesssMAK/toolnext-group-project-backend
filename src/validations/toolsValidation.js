@@ -20,9 +20,9 @@ const objectIdValidator = (value, helpers) => {
   return !isValidObjectId(value) ? helpers.message('Invalid id format') : value;
 };
 export const toolIdParamSchema = {
-  [Segments.PARAMS]: Joi.object({
+    [Segments.PARAMS]: Joi.object({
     toolId: Joi.string().custom(objectIdValidator).required(),
-  }),
+    }),
 };
 
 export const updateToolSchema = {

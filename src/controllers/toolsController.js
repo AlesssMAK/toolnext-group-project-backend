@@ -1,5 +1,6 @@
 import { Tool } from '../models/tool.js';
 import mongoose from 'mongoose'; 
+import createHttpError from 'http-errors';
 
 export const getTools = async (req, res) => {
     const { page = 1, limit = 10, categories, search } = req.query;
@@ -49,3 +50,30 @@ export const getTools = async (req, res) => {
     tools,
     });
 };
+
+export const getToolById = async (req, res, next) => {
+    const { toolId } = req.params;
+    const tool = await Tool.findById(toolId);
+
+    if (!tool) {
+    next(createHttpError(404, 'Tool not found'));
+    return;
+    };
+
+    res.status(200).json(tool);
+};
+
+export const deleteTool = async (req, res, next) => {
+    const { toolId } = req.params;
+
+    const tool = await Tool.findOneAndDelete({
+    _id: toolId,
+    });
+
+    if (!tool) {
+    next(createHttpError(404, 'Tool not found'));
+    return;
+    };
+    res.status(200).json(tool);
+};
+
