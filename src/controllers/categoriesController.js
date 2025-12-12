@@ -1,9 +1,9 @@
-const Category = require("../models/category.model");
 
-exports.getCategories = async (req, res, next) => {
+import Category from "../models/category.js";
+
+export const getCategories = async (req, res, next) => {
   try {
     const categories = await Category.find().sort({ name: 1 });
-
     res.json({
       status: "success",
       code: 200,

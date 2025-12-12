@@ -39,6 +39,7 @@
     "helmet": "^8.1.0",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.0.0",
     "mongoose": "^8.20.2",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.11",
@@ -49,4 +50,3 @@
     "swagger-ui-express": "^5.0.1"
   }
 }
-
