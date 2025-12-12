@@ -38,20 +38,21 @@ export const registerUser = async (req, res, next) => {
 export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
-  // const username = await User.findOne({ name: name._id});
-  // console.log(username);
-  // if (!username) {
-  //   return next(createHttpError(401, 'Invalid name or password'));
+  // const user = await User.findOne({
+  //   $or: [{email}, {name}]
+  // });
+  // if (!user) {
+  //   return next(createHttpError(401, 'Invalid email or name'));
   // }
 
   const user = await User.findOne({ email });
   if (!user) {
-    return next(createHttpError(401, 'Invalid email or password'));
+    return next(createHttpError(401, 'Invalid email'));
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return next(createHttpError(401, 'Invalid email or password'));
+    return next(createHttpError(401, 'Invalid password'));
   }
 
   await Session.deleteOne({ userId: user._id });
@@ -65,5 +66,22 @@ export const loginUser = async (req, res, next) => {
       email: user.email,
       name: user.name,
     }
+  });
+};
+
+export const logoutUser = async (req, res) => {
+  const { sessionId } = req.cookies;
+
+  if (sessionId) {
+    await Session.deleteOne({ _id: sessionId });
+  };
+
+  res.clearCookie('sessionId');
+  res.clearCookie('accessToken');
+  res.clearCookie('refreshToken');
+
+   res.status(200).json({
+    success: true,
+    message: "Ви вийшли із профілю",
   });
 };
