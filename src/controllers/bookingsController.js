@@ -2,6 +2,7 @@ import createHttpError from 'http-errors';
 import { Booking } from '../models/booking.js';
 // import { User } from '../models/user.js';
 import { Tool } from '../models/tool.js';
+import moment from 'moment';
 
 export const createBooking = async (req, res, next) => {
   try {
@@ -13,7 +14,7 @@ export const createBooking = async (req, res, next) => {
 
     const userId = user._id;
 
-    const { toolId } = req.body;
+    const { toolId, startDate, endDate } = req.body;
     if (!req.body.userPhone) {
       return next(createHttpError(400, 'Phone is required'));
     }
@@ -27,11 +28,37 @@ export const createBooking = async (req, res, next) => {
 
     const date = new Date().toISOString();
 
+    const overlappingBooking = await Booking.findOne({
+      toolId,
+      status: { $ne: 'cancelled' },
+      startDate: { $lte: endDate },
+      endDate: { $gte: startDate },
+    });
+
+    if (overlappingBooking) {
+      return next(
+        createHttpError(400, 'Tool is already booked for these dates'),
+      );
+    }
+
+    const today = moment().startOf('day');
+    const start = moment(startDate, 'YYYY-MM-DD');
+    const end = moment(endDate, 'YYYY-MM-DD');
+
+    let autoStatus = 'pending';
+
+    if (today.isBetween(start, end, null, '[]')) {
+      autoStatus = 'active';
+    } else if (today.isAfter(end)) {
+      autoStatus = 'finished';
+    }
+
     const newBooking = await Booking.create({
       ...req.body,
 
       userId: userId,
       date,
+      status: autoStatus,
     });
 
     res.status(201).json(newBooking);

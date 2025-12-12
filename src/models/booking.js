@@ -20,7 +20,7 @@ const bookingSchema = new Schema(
     status: {
       type: String,
       enum: BOOKING_STATUS,
-      default: ' ',
+      default: 'pending',
     },
     userFirstname: { type: String, required: true },
     userLastname: { type: String, required: true },
