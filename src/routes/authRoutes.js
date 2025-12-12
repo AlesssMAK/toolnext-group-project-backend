@@ -1,12 +1,13 @@
 
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
-import { loginUser, registerUser } from '../controllers/authController.js';
-import { registerUserSchema } from '../validations/authValidation.js';
+import { loginUser, logoutUser, registerUser } from '../controllers/authController.js';
+import { loginUserSchema, registerUserSchema } from '../validations/authValidation.js';
 
 const router = Router();
 
 router.post('/api/auth/register', celebrate(registerUserSchema), registerUser);
-router.post('/api/auth/login', loginUser);
+router.post('/api/auth/login', celebrate(loginUserSchema), loginUser);
+router.post('/api/auth/logout', logoutUser);
 
 export default router;
