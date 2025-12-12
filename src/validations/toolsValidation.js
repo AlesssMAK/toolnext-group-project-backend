@@ -18,7 +18,7 @@ export const createToolSchema = {
 
 export const toolIdParamSchema = {
     [Segments.PARAMS]: Joi.object({
-        toolId: Joi.string().custom(objectIdValidator).required(),
+    toolId: Joi.string().custom(objectIdValidator).required(),
     }),
 };
 

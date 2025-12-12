@@ -6,6 +6,7 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: true,
+      // unique: true,
       trim: true,
     },
     email: {
@@ -31,6 +32,11 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
+    avatar: {
+      type: String,
+      required: false,
+      default: ''
+    }
   },
   {
     timestamps: true,
