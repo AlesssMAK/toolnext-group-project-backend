@@ -1,5 +1,5 @@
 import { Router } from 'express';
-// import { authenticate } from '../middleware/authenticate.js';
+import { authenticate } from '../middleware/authenticate.js';
 import {
   getUser,
   getUserProfile,
@@ -7,9 +7,7 @@ import {
 } from '../controllers/userController.js';
 
 const router = Router();
-// router.get('/api/users/me', authenticate, getUser);
-
-router.get('/api/users/me', getUser);
+router.get('/api/users/me', authenticate, getUser);
 
 router.get('/api/users/:userId', getUserProfile);
 
