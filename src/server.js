@@ -30,11 +30,12 @@ app.use(bookingsRoutes);
 app.use(authRoutes);
 app.use(feedbackRoutes);
 app.use(userRoutes);
+app.use('/api/categories', categoriesRoutes);
 
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
-app.use('/api/categories', categoriesRoutes);
+
 
 await connectMongoDB();
 
