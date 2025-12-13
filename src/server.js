@@ -15,6 +15,7 @@ import bookingsRoutes from './routes/bookingsRoutes.js';
 import feedbackRoutes from './routes/feedbackRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import categoriesRoutes from './routes/categoriesRoutes.js';
 
 const app = express();
 const PORT = 3000;
@@ -33,6 +34,7 @@ app.use(userRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);
+app.use('/api/categories', categoriesRoutes);
 
 await connectMongoDB();
 
