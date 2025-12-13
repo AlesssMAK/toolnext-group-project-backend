@@ -14,7 +14,6 @@ import toolRouters from './routes/toolsRoutes.js';
 import bookingsRoutes from './routes/bookingsRoutes.js';
 import feedbackRoutes from './routes/feedbackRoutes.js';
 import authRoutes from './routes/authRoutes.js';
-
 import userRoutes from './routes/userRoutes.js';
 
 const app = express();
@@ -30,6 +29,7 @@ app.use(bookingsRoutes);
 app.use(authRoutes);
 app.use(feedbackRoutes);
 app.use(userRoutes);
+
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);

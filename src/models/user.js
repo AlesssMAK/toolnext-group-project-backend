@@ -6,7 +6,6 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: true,
-      // unique: true,
       trim: true,
     },
     email: {
@@ -45,8 +44,8 @@ const userSchema = new Schema(
 );
 
 userSchema.pre('save', function (next) {
-  if (!this.name) {
-    this.name = this.email;
+  if (!this.avatar) {
+    this.avatar = this.name.charAt(0).toUpperCase();
   }
   next();
 });

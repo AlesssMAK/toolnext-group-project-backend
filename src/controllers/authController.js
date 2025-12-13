@@ -2,9 +2,9 @@
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
 
-import { createSession, setSessionCookies  } from "../services/auth.js";
 import { User } from "../models/user.js";
 import { Session } from "../models/session.js";
+import { createSession, setSessionCookies  } from "../services/auth.js";
 
 export const registerUser = async (req, res, next) => {
   const { name, email, password} = req.body;
@@ -84,4 +84,31 @@ export const logoutUser = async (req, res) => {
     success: true,
     message: "Ви вийшли із профілю",
   });
+};
+
+export const refreshUserToken = async (req, res, next) => {
+
+  const session = await Session.findOne({
+    _id: req.cookies.sessionId,
+    refreshToken: req.cookies.refreshToken,
+  });
+
+  if (!session) {
+    return next(createHttpError(401, 'Session not found'));
+  };
+
+  const isSessionTokenExpired = new Date() > new Date(session.refreshTokenValidUntil);
+  if (isSessionTokenExpired) {
+    return next(createHttpError(401, 'Session token expired'));
+  };
+
+  await Session.deleteOne({
+    _id: req.cookies.session,
+    refreshToken: req.cookies.refreshToken,
+  });
+
+  const newSession = await createSession(session.userId);
+  setSessionCookies(res, newSession);
+
+  res.status(200).json({"message": "Session refreshed"});
 };
