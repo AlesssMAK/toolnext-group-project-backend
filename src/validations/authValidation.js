@@ -14,8 +14,8 @@ export const registerUserSchema = {
 
 export const loginUserSchema = {
   [Segments.BODY]: Joi.object({
-    email: Joi.string().email(),
     // name: Joi.string().min(2).max(32),
+    email: Joi.string().email(),
     password: Joi.string().min(8).required(),
   })
   // .xor("email", "name")
