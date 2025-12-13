@@ -1,24 +1,21 @@
 import { Joi, Segments } from 'celebrate';
 import { isValidObjectId } from 'mongoose';
 
+const objectIdValidator = (value, helpers) => {
+    return !isValidObjectId(value) ? helpers.message('Invalid id format') : value;
+};
+
 export const createToolSchema = {
     [Segments.BODY]:Joi.object({
         name: Joi.string().min(3).max(96).required(),
         pricePerDay: Joi.number().min(0).required(),
-        categoryId: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
+        category: Joi.string().custom(objectIdValidator).required(),
         description: Joi.string().min(20).max(2000).required(),
-        terms: Joi.string().min(20).max(1000).required(),
-        specifications: Joi.string().max(1000),
-        images: Joi.object({
-            mimetype: Joi.string().valid('image/jpeg', 'image/png').required(),
-            size: Joi.number().max(1048576)
-        }).required()
-    })
+        rentalTerms: Joi.string().min(20).max(1000).required(),
+        specifications: Joi.string().max(1000).optional().allow(''),
+    }),
 };
 
-const objectIdValidator = (value, helpers) => {
-  return !isValidObjectId(value) ? helpers.message('Invalid id format') : value;
-};
 export const toolIdParamSchema = {
     [Segments.PARAMS]: Joi.object({
     toolId: Joi.string().custom(objectIdValidator).required(),
@@ -32,15 +29,11 @@ export const updateToolSchema = {
     [Segments.BODY]: Joi.object({
         name: Joi.string().min(3).max(96),
         pricePerDay: Joi.number().min(0),
-        categoryId: Joi.alternatives().try(Joi.string(), Joi.number()),
+        category: Joi.string().custom(objectIdValidator),
         description: Joi.string().min(20).max(2000),
-        terms: Joi.string().min(20).max(1000),
-        specifications: Joi.string().max(1000),
-        images: Joi.object({
-            mimetype: Joi.string().valid('image/jpeg', 'image/png'),
-            size: Joi.number().max(1048576)
-        })
-    }).min(1)
+        rentalTerms: Joi.string().min(20).max(1000),
+        specifications: Joi.string().max(1000).optional().allow(''),
+    }).min(1),
 };
 
 export const getToolsSchema = {
