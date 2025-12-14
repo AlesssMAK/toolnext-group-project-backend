@@ -11,7 +11,7 @@ export const getUser = async (req, res, next) => {
       return next(createHttpError(401, 'Not authenticated'));
     }
 
-    const userId = user._id;
+    const userId = user.id;
 
     const toolsCount = await Tool.countDocuments({
       owner: userId,
