@@ -34,6 +34,7 @@ export const authenticate = async (req, res, next) => {
       role: user.role,
       email: user.email,
       name: user.name,
+      avatar: user.avatar,
     };
     next();
   } catch (error) {
