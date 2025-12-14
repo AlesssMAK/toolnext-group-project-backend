@@ -1,18 +1,35 @@
-// controllers/categoriesController.js
 import Category from "../models/category.js";
 
-// Отримати всі категорії
 export const getAllCategories = async (req, res, next) => {
   try {
-    // Вибираємо тільки поле name і сортуємо за алфавітом
-    const categories = await Category.find({}, "name").sort({ name: 1 });
-
+    const categories = await Category.find();
     res.status(200).json({
       status: "success",
       data: categories,
     });
   } catch (error) {
-    // Передаємо помилку в middleware для обробки
     next(error);
   }
 };
+
+export const createCategory = async (req, res, next) => {
+  try {
+    const { title, description, keywords } = req.body;
+
+    if (!title || !description || !keywords) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const newCategory = new Category({ title, description, keywords });
+    await newCategory.save();
+
+    res.status(201).json({
+      status: "success",
+      data: newCategory,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
