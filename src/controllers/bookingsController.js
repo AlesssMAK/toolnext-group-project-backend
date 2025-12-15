@@ -12,7 +12,7 @@ export const createBooking = async (req, res, next) => {
       return next(createHttpError(401, 'Not authenticated'));
     }
 
-    const userId = user._id;
+    const userId = user.id;
 
     const { toolId, startDate, endDate } = req.body;
     if (!req.body.userPhone) {
