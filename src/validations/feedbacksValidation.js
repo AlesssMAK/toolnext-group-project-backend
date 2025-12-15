@@ -8,3 +8,11 @@ export const getFeedbacksValidation = {
     sortOrder: Joi.string().valid('asc', 'desc').default('desc'),
   })
 };
+
+export const createFeedbackValidation = {
+  [Segments.BODY]: Joi.object({
+    name: Joi.string().min(2).max(64).required(),
+    description: Joi.string().min(3).max(1000).required(),
+    rate: Joi.number().min(1).max(5).precision(1).required(),
+  }),
+};
