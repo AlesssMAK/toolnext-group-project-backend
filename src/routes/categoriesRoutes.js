@@ -1,13 +1,14 @@
-import { Router } from "express";
-import { getAllCategories, createCategory } from "../controllers/categoryController.js";
+import { Router } from 'express';
+import {
+  getAllCategories,
+  createCategory,
+} from '../controllers/categoryController.js';
 
 const router = Router();
 
-router.get("/", getAllCategories);
+router.get('/api/categories', getAllCategories);
 
 // Додай POST-ендпоінт
-router.post("/", createCategory);
+router.post('/', createCategory);
 
 export default router;
-
-
