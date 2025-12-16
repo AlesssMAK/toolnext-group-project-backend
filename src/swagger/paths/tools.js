@@ -20,7 +20,7 @@
  *         schema:
  *           type: integer
  *           default: 10
- *         description: Number of items per page
+ *         description: Items per page
  *       - in: query
  *         name: categories
  *         schema:
@@ -34,7 +34,7 @@
  *         description: Search by tool name (case-insensitive)
  *     responses:
  *       200:
- *         description: Successfully retrieved tools
+ *         description: Tools list
  *         content:
  *           application/json:
  *             schema:
@@ -42,16 +42,12 @@
  *               properties:
  *                 page:
  *                   type: integer
- *                   example: 1
  *                 limit:
  *                   type: integer
- *                   example: 10
  *                 totalItems:
  *                   type: integer
- *                   example: 25
  *                 totalPages:
  *                   type: integer
- *                   example: 3
  *                 tools:
  *                   type: array
  *                   items:
@@ -77,51 +73,24 @@
  *             properties:
  *               name:
  *                 type: string
- *                 example: Power Drill
  *               description:
  *                 type: string
- *                 example: Professional cordless drill
  *               category:
  *                 type: string
- *                 example: 507f1f77bcf86cd799439013
  *               pricePerDay:
  *                 type: number
- *                 example: 15.99
  *               image:
  *                 type: string
  *                 format: binary
  *               specifications:
  *                 type: string
- *                 description: JSON string with tool specifications
+ *                 description: JSON string
  *                 example: '{ "power": "18V", "weight": "1.5kg" }'
  *     responses:
  *       201:
- *         description: Tool successfully created
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: success
- *                 data:
- *                   $ref: '#/components/schemas/Tool'
+ *         description: Tool created
  *       400:
- *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *             examples:
- *               imageRequired:
- *                 summary: Image is required
- *                 value:
- *                   message: Image is required
- *               invalidSpecifications:
- *                 summary: Invalid JSON in specifications
- *                 value:
- *                   message: Invalid JSON in specifications
+ *         description: Validation error
  *
  * /api/tools/{toolId}:
  *   get:
@@ -136,19 +105,11 @@
  *     responses:
  *       200:
  *         description: Tool found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Tool'
  *       404:
  *         description: Tool not found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
  *
  *   patch:
- *     summary: Update tool by ID
+ *     summary: Update tool
  *     tags: [Tools]
  *     security:
  *       - cookieAuth: []
@@ -159,7 +120,6 @@
  *         schema:
  *           type: string
  *     requestBody:
- *       required: false
  *       content:
  *         multipart/form-data:
  *           schema:
@@ -178,44 +138,16 @@
  *                 format: binary
  *               specifications:
  *                 type: string
- *                 description: JSON string
  *     responses:
  *       200:
- *         description: Tool successfully updated
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: success
- *                 data:
- *                   $ref: '#/components/schemas/Tool'
- *       400:
- *         description: Invalid JSON in specifications
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
+ *         description: Tool updated
  *       403:
  *         description: Access denied
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *             example:
- *               statusCode: 403
- *               message: Access denied: You are not the owner
  *       404:
  *         description: Tool not found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
  *
  *   delete:
- *     summary: Delete tool by ID
+ *     summary: Delete tool
  *     tags: [Tools]
  *     security:
  *       - cookieAuth: []
@@ -227,15 +159,7 @@
  *           type: string
  *     responses:
  *       200:
- *         description: Tool successfully deleted
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Tool'
+ *         description: Tool deleted
  *       404:
  *         description: Tool not found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
  */
