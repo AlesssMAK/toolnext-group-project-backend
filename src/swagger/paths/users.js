@@ -12,26 +12,45 @@
  *       - cookieAuth: []
  *     responses:
  *       200:
- *         description: User details
+ *         description: Successfully retrieved current user
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: integer
- *                   example: 200
- *                 message:
- *                   type: string
- *                   example: Successfully found user!
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *                 data:
- *                   $ref: '#/components/schemas/User'
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: 64f0c2a9b9a1c2a1a1234567
+ *                     name:
+ *                       type: string
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       example: john.doe@example.com
+ *                     avatar:
+ *                       type: string
+ *                       example: https://res.cloudinary.com/demo/image/upload/avatar.jpg
+ *                     rating:
+ *                       type: number
+ *                       example: 4.6
+ *                     toolsCount:
+ *                       type: integer
+ *                       example: 5
  *       401:
- *         description: Unauthorized
+ *         description: Not authenticated
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               statusCode: 401
+ *               message: Not authenticated
  *
  * /api/users/{userId}:
  *   get:
@@ -46,26 +65,54 @@
  *         description: User ID
  *     responses:
  *       200:
- *         description: User profile details
+ *         description: Successfully retrieved user profile
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: integer
- *                   example: 200
- *                 message:
- *                   type: string
- *                   example: Successfully found user!
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *                 data:
- *                   $ref: '#/components/schemas/User'
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: 64f0c2a9b9a1c2a1a1234567
+ *                     name:
+ *                       type: string
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       example: john.doe@example.com
+ *                     avatar:
+ *                       type: string
+ *                       example: https://res.cloudinary.com/demo/image/upload/avatar.jpg
+ *                     rating:
+ *                       type: number
+ *                       example: 4.2
+ *                     toolsCount:
+ *                       type: integer
+ *                       example: 3
+ *       400:
+ *         description: Invalid user ID format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               statusCode: 400
+ *               message: Invalid user ID format
  *       404:
  *         description: User not found
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               statusCode: 404
+ *               message: User not found
  *
  * /api/users/{userId}/tools:
  *   get:
@@ -85,41 +132,47 @@
  *           default: 1
  *         description: Page number
  *       - in: query
- *         name: limit
+ *         name: perPage
  *         schema:
  *           type: integer
- *           default: 10
+ *           default: 8
  *         description: Number of items per page
  *     responses:
  *       200:
- *         description: List of user's tools
+ *         description: Successfully retrieved user's tools
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: integer
- *                   example: 200
- *                 message:
- *                   type: string
- *                   example: Successfully found tools!
  *                 data:
  *                   type: object
  *                   properties:
- *                     data:
+ *                     tools:
  *                       type: array
  *                       items:
  *                         $ref: '#/components/schemas/Tool'
- *                     page:
- *                       type: integer
- *                       example: 1
- *                     perPage:
- *                       type: integer
- *                       example: 10
- *                     totalItems:
- *                       type: integer
- *                       example: 3
+ *                     pagination:
+ *                       type: object
+ *                       properties:
+ *                         currentPage:
+ *                           type: integer
+ *                           example: 1
+ *                         perPage:
+ *                           type: integer
+ *                           example: 8
+ *                         totalTools:
+ *                           type: integer
+ *                           example: 12
+ *                         totalPages:
+ *                           type: integer
+ *                           example: 2
+ *       400:
+ *         description: Invalid user ID format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  *       404:
  *         description: User not found
  *         content:

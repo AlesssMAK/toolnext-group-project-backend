@@ -22,64 +22,40 @@
  *           default: 10
  *         description: Number of items per page
  *       - in: query
- *         name: category
+ *         name: categories
  *         schema:
  *           type: string
- *         description: Filter by category ID
- *       - in: query
- *         name: minPrice
- *         schema:
- *           type: number
- *         description: Minimum price per day
- *       - in: query
- *         name: maxPrice
- *         schema:
- *           type: number
- *         description: Maximum price per day
+ *         description: Comma-separated category IDs
+ *         example: 507f1f77bcf86cd799439013,507f1f77bcf86cd799439014
  *       - in: query
  *         name: search
  *         schema:
  *           type: string
- *         description: Search in tool name and description
+ *         description: Search by tool name (case-insensitive)
  *     responses:
  *       200:
- *         description: List of tools
+ *         description: Successfully retrieved tools
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
+ *                 page:
  *                   type: integer
- *                   example: 200
- *                 message:
- *                   type: string
- *                   example: Successfully found tools!
- *                 data:
- *                   type: object
- *                   properties:
- *                     data:
- *                       type: array
- *                       items:
- *                         $ref: '#/components/schemas/Tool'
- *                     page:
- *                       type: integer
- *                       example: 1
- *                     perPage:
- *                       type: integer
- *                       example: 10
- *                     totalItems:
- *                       type: integer
- *                       example: 50
- *                     totalPages:
- *                       type: integer
- *                       example: 5
- *       400:
- *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
+ *                   example: 1
+ *                 limit:
+ *                   type: integer
+ *                   example: 10
+ *                 totalItems:
+ *                   type: integer
+ *                   example: 25
+ *                 totalPages:
+ *                   type: integer
+ *                   example: 3
+ *                 tools:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Tool'
  *
  *   post:
  *     summary: Create a new tool
@@ -104,7 +80,7 @@
  *                 example: Power Drill
  *               description:
  *                 type: string
- *                 example: Professional cordless power drill
+ *                 example: Professional cordless drill
  *               category:
  *                 type: string
  *                 example: 507f1f77bcf86cd799439013
@@ -114,13 +90,10 @@
  *               image:
  *                 type: string
  *                 format: binary
- *                 description: Tool image file
  *               specifications:
- *                 type: object
- *                 example: { "power": "18V", "weight": "1.5kg" }
- *               rentalTerms:
  *                 type: string
- *                 example: Minimum rental period is 1 day
+ *                 description: JSON string with tool specifications
+ *                 example: '{ "power": "18V", "weight": "1.5kg" }'
  *     responses:
  *       201:
  *         description: Tool successfully created
@@ -130,11 +103,8 @@
  *               type: object
  *               properties:
  *                 status:
- *                   type: integer
- *                   example: 201
- *                 message:
  *                   type: string
- *                   example: Successfully created a tool!
+ *                   example: success
  *                 data:
  *                   $ref: '#/components/schemas/Tool'
  *       400:
@@ -143,12 +113,15 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
- *       401:
- *         description: Unauthorized
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
+ *             examples:
+ *               imageRequired:
+ *                 summary: Image is required
+ *                 value:
+ *                   message: Image is required
+ *               invalidSpecifications:
+ *                 summary: Invalid JSON in specifications
+ *                 value:
+ *                   message: Invalid JSON in specifications
  *
  * /api/tools/{toolId}:
  *   get:
@@ -160,23 +133,13 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: Tool ID
  *     responses:
  *       200:
- *         description: Tool details
+ *         description: Tool found
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: integer
- *                   example: 200
- *                 message:
- *                   type: string
- *                   example: Successfully found tool!
- *                 data:
- *                   $ref: '#/components/schemas/Tool'
+ *               $ref: '#/components/schemas/Tool'
  *       404:
  *         description: Tool not found
  *         content:
@@ -195,9 +158,8 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: Tool ID
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         multipart/form-data:
  *           schema:
@@ -205,24 +167,18 @@
  *             properties:
  *               name:
  *                 type: string
- *                 example: Power Drill Pro
  *               description:
  *                 type: string
- *                 example: Updated professional cordless power drill
  *               category:
  *                 type: string
- *                 example: 507f1f77bcf86cd799439013
  *               pricePerDay:
  *                 type: number
- *                 example: 18.99
  *               image:
  *                 type: string
  *                 format: binary
- *                 description: Updated tool image file
  *               specifications:
- *                 type: object
- *               rentalTerms:
  *                 type: string
+ *                 description: JSON string
  *     responses:
  *       200:
  *         description: Tool successfully updated
@@ -232,19 +188,25 @@
  *               type: object
  *               properties:
  *                 status:
- *                   type: integer
- *                   example: 200
- *                 message:
  *                   type: string
- *                   example: Successfully updated tool!
+ *                   example: success
  *                 data:
  *                   $ref: '#/components/schemas/Tool'
- *       401:
- *         description: Unauthorized
+ *       400:
+ *         description: Invalid JSON in specifications
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *       403:
+ *         description: Access denied
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               statusCode: 403
+ *               message: Access denied: You are not the owner
  *       404:
  *         description: Tool not found
  *         content:
@@ -263,16 +225,13 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: Tool ID
  *     responses:
- *       204:
+ *       200:
  *         description: Tool successfully deleted
- *       401:
- *         description: Unauthorized
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Error'
+ *               $ref: '#/components/schemas/Tool'
  *       404:
  *         description: Tool not found
  *         content:

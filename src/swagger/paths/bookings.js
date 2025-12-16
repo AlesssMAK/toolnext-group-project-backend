@@ -1,9 +1,5 @@
 /**
  * @swagger
- * tags:
- *   - name: Bookings
- *     description: Booking management endpoints
- *
  * /api/bookings:
  *   post:
  *     summary: Create a new booking
@@ -18,7 +14,6 @@
  *             type: object
  *             required:
  *               - toolId
- *               - date
  *               - userFirstname
  *               - userLastname
  *               - userPhone
@@ -29,10 +24,7 @@
  *             properties:
  *               toolId:
  *                 type: string
- *                 example: 507f1f77bcf86cd799439012
- *               date:
- *                 type: string
- *                 example: 2025-12-20
+ *                 example: 692db3ffab59e437964311b7
  *               userFirstname:
  *                 type: string
  *                 example: John
@@ -41,13 +33,13 @@
  *                 example: Doe
  *               userPhone:
  *                 type: string
- *                 example: "+380123456789"
+ *                 example: "+380 50 123 45 64"
  *               startDate:
  *                 type: string
- *                 example: 2025-12-20
+ *                 example: 2026-02-11
  *               endDate:
  *                 type: string
- *                 example: 2025-12-25
+ *                 example: 2026-02-12
  *               deliveryCity:
  *                 type: string
  *                 example: Kyiv
@@ -60,26 +52,48 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: integer
- *                   example: 201
- *                 message:
- *                   type: string
- *                   example: Successfully created booking!
- *                 data:
- *                   $ref: '#/components/schemas/Booking'
+ *               $ref: '#/components/schemas/Booking'
+ *
  *       400:
  *         description: Bad request
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *             examples:
+ *               phoneRequired:
+ *                 summary: Phone is required
+ *                 value:
+ *                   statusCode: 400
+ *                   message: Phone is required
+ *               toolIdRequired:
+ *                 summary: toolId is required
+ *                 value:
+ *                   statusCode: 400
+ *                   message: toolId is required
+ *               toolAlreadyBooked:
+ *                 summary: Tool already booked
+ *                 value:
+ *                   statusCode: 400
+ *                   message: Tool is already booked for these dates
+ *
  *       401:
- *         description: Unauthorized
+ *         description: Not authenticated
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               statusCode: 401
+ *               message: Not authenticated
+ *
+ *       404:
+ *         description: Tool not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               statusCode: 404
+ *               message: Tool not found
  */

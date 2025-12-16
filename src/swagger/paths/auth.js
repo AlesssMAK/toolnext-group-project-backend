@@ -29,7 +29,6 @@
  *               password:
  *                 type: string
  *                 format: password
- *                 minLength: 6
  *                 example: password123
  *     responses:
  *       201:
@@ -39,30 +38,28 @@
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: integer
- *                   example: 201
- *                 message:
- *                   type: string
- *                   example: User successfully registered!
- *                 data:
+ *                 user:
  *                   type: object
  *                   properties:
- *                     accessToken:
+ *                     id:
  *                       type: string
- *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *                       example: 64f0c2a9b9a1c2a1a1234567
+ *                     email:
+ *                       type: string
+ *                       example: john.doe@example.com
+ *                     name:
+ *                       type: string
+ *                       example: John Doe
+ *
  *       400:
- *         description: Bad request (validation error)
+ *         description: Email already in use
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
- *       409:
- *         description: Email already exists
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               statusCode: 400
+ *               message: Email in use
  *
  * /api/auth/login:
  *   post:
@@ -99,30 +96,36 @@
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: integer
- *                   example: 200
- *                 message:
- *                   type: string
- *                   example: Successfully logged in!
- *                 data:
+ *                 user:
  *                   type: object
  *                   properties:
- *                     accessToken:
+ *                     id:
  *                       type: string
- *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
- *       400:
- *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
+ *                       example: 64f0c2a9b9a1c2a1a1234567
+ *                     email:
+ *                       type: string
+ *                       example: john.doe@example.com
+ *                     name:
+ *                       type: string
+ *                       example: John Doe
+ *
  *       401:
- *         description: Unauthorized (invalid credentials)
+ *         description: Invalid credentials
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *             examples:
+ *               invalidEmail:
+ *                 summary: Invalid email
+ *                 value:
+ *                   statusCode: 401
+ *                   message: Invalid email
+ *               invalidPassword:
+ *                 summary: Invalid password
+ *                 value:
+ *                   statusCode: 401
+ *                   message: Invalid password
  *
  * /api/auth/logout:
  *   post:
@@ -131,45 +134,53 @@
  *     security:
  *       - cookieAuth: []
  *     responses:
- *       204:
- *         description: Successfully logged out
- *       401:
- *         description: Unauthorized
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *
- * /api/auth/refrech:
- *   post:
- *     summary: Refresh user token
- *     tags: [Auth]
- *     security:
- *       - cookieAuth: []
- *     responses:
  *       200:
- *         description: Token successfully refreshed
+ *         description: Successfully logged out
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: integer
- *                   example: 200
+ *                 success:
+ *                   type: boolean
+ *                   example: true
  *                 message:
  *                   type: string
- *                   example: Token successfully refreshed!
- *                 data:
- *                   type: object
- *                   properties:
- *                     accessToken:
- *                       type: string
- *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *                   example: Ви вийшли із профілю
+ *
+ * /api/auth/refresh:
+ *   post:
+ *     summary: Refresh user session
+ *     tags: [Auth]
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Session successfully refreshed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Session refreshed
+ *
  *       401:
  *         description: Unauthorized
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
+ *             examples:
+ *               sessionNotFound:
+ *                 summary: Session not found
+ *                 value:
+ *                   statusCode: 401
+ *                   message: Session not found
+ *               sessionExpired:
+ *                 summary: Session token expired
+ *                 value:
+ *                   statusCode: 401
+ *                   message: Session token expired
  */

@@ -10,61 +10,24 @@
  *     tags: [Categories]
  *     responses:
  *       200:
- *         description: List of all categories
+ *         description: Successfully retrieved categories
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
  *                 status:
- *                   type: integer
- *                   example: 200
- *                 message:
  *                   type: string
- *                   example: Successfully found categories!
+ *                   example: success
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Category'
- *
- *   post:
- *     summary: Create a new category
- *     tags: [Categories]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - name
- *             properties:
- *               name:
- *                 type: string
- *                 example: Power Tools
- *               description:
- *                 type: string
- *                 example: Electric and battery-powered tools
- *     responses:
- *       201:
- *         description: Category successfully created
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: integer
- *                   example: 201
- *                 message:
- *                   type: string
- *                   example: Successfully created category!
- *                 data:
- *                   $ref: '#/components/schemas/Category'
- *       400:
- *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 64f0c2a9b9a1c2a1a1234567
+ *                       title:
+ *                         type: string
+ *                         example: Power Tools
  */
