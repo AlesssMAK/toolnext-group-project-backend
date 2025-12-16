@@ -73,7 +73,7 @@ export const getUserProfile = async (req, res, next) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        avatar: user.avatar,
+        avatar: user.avatarUrl || user.avatar || '',
         rating: Math.round(rating * 10) / 10,
         toolsCount,
       },
