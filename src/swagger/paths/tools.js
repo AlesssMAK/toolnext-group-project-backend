@@ -2,11 +2,14 @@
  * @swagger
  * tags:
  *   - name: Tools
- *     description: Tool management endpoints
- *
+ *     description: Tool management
+ */
+
+/**
+ * @swagger
  * /api/tools:
  *   get:
- *     summary: Get all tools with filtering and pagination
+ *     summary: Get list of tools with filters and pagination
  *     tags: [Tools]
  *     parameters:
  *       - in: query
@@ -25,8 +28,8 @@
  *         name: categories
  *         schema:
  *           type: string
- *         description: Comma-separated category IDs
- *         example: 507f1f77bcf86cd799439013,507f1f77bcf86cd799439014
+ *         description: Comma-separated category ObjectIds
+ *         example: 6704d9c7f1a3b8c2d5e4f6a0,6704d9c7f1a3b8c2d5e4f6a1
  *       - in: query
  *         name: search
  *         schema:
@@ -52,9 +55,13 @@
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Tool'
- *
+ */
+
+/**
+ * @swagger
+ * /api/tools:
  *   post:
- *     summary: Create a new tool
+ *     summary: Create new tool
  *     tags: [Tools]
  *     security:
  *       - cookieAuth: []
@@ -77,21 +84,37 @@
  *                 type: string
  *               category:
  *                 type: string
+ *                 description: Category ObjectId
  *               pricePerDay:
  *                 type: number
  *               image:
  *                 type: string
  *                 format: binary
+ *               rentalTerms:
+ *                 type: string
  *               specifications:
  *                 type: string
  *                 description: JSON string
  *                 example: '{ "power": "18V", "weight": "1.5kg" }'
  *     responses:
  *       201:
- *         description: Tool created
+ *         description: Tool successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   $ref: '#/components/schemas/Tool'
  *       400:
- *         description: Validation error
- *
+ *         description: Validation or file error
+ */
+
+/**
+ * @swagger
  * /api/tools/{toolId}:
  *   get:
  *     summary: Get tool by ID
@@ -105,11 +128,19 @@
  *     responses:
  *       200:
  *         description: Tool found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tool'
  *       404:
  *         description: Tool not found
- *
+ */
+
+/**
+ * @swagger
+ * /api/tools/{toolId}:
  *   patch:
- *     summary: Update tool
+ *     summary: Update tool (only owner)
  *     tags: [Tools]
  *     security:
  *       - cookieAuth: []
@@ -133,11 +164,14 @@
  *                 type: string
  *               pricePerDay:
  *                 type: number
+ *               rentalTerms:
+ *                 type: string
  *               image:
  *                 type: string
  *                 format: binary
  *               specifications:
  *                 type: string
+ *                 description: JSON string
  *     responses:
  *       200:
  *         description: Tool updated
@@ -145,7 +179,11 @@
  *         description: Access denied
  *       404:
  *         description: Tool not found
- *
+ */
+
+/**
+ * @swagger
+ * /api/tools/{toolId}:
  *   delete:
  *     summary: Delete tool
  *     tags: [Tools]
@@ -162,4 +200,57 @@
  *         description: Tool deleted
  *       404:
  *         description: Tool not found
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Tool:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         owner:
+ *           type: string
+ *         category:
+ *           type: string
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         pricePerDay:
+ *           type: number
+ *         images:
+ *           type: string
+ *         rating:
+ *           type: number
+ *         rentalTerms:
+ *           type: string
+ *         specifications:
+ *           type: object
+ *         bookedDates:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               startDate:
+ *                 type: string
+ *               endDate:
+ *                 type: string
+ *         feedbacks:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *               comment:
+ *                 type: string
+ *               rating:
+ *                 type: number
+ *         createdAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
  */

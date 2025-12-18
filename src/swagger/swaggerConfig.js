@@ -18,7 +18,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'http://localhost:3000',
+      url: 'https://toolnext-group-project-backend.onrender.com/',
       description: 'Development server',
     },
   ],
@@ -37,11 +37,11 @@ const swaggerDefinition = {
       },
     },
   },
-  security: [
-    {
-      cookieAuth: [],
-    },
-  ],
+  // security: [
+  //   {
+  //     cookieAuth: [],
+  //   },
+  // ],
 };
 
 const options = {
