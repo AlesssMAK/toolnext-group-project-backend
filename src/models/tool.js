@@ -32,7 +32,7 @@ const toolSchema = new Schema(
     },
 
     images: {
-      type: String,
+      type: [String],
       required: true,
     },
 
