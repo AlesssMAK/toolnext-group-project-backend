@@ -4,17 +4,22 @@ import { Tool } from '../models/tool.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getTools = async (req, res) => {
-  const { page = 1, limit = 10, categories, search } = req.query;
+  const {
+    page = 1,
+    limit = 10,
+    categories,
+    search,
+    minPrice,
+    maxPrice,
+  } = req.query;
 
   const pageNumber = parseInt(page, 10);
   const limitNumber = parseInt(limit, 10);
-
   const skip = (pageNumber - 1) * limitNumber;
 
   const filters = {};
   if (categories) {
     const categoryIdsString = categories.split(',');
-
     const categoryObjectIds = categoryIdsString
       .map((id) => {
         if (mongoose.Types.ObjectId.isValid(id)) {
@@ -23,7 +28,6 @@ export const getTools = async (req, res) => {
         return null;
       })
       .filter((id) => id !== null);
-
     if (categoryObjectIds.length > 0) {
       filters.category = { $in: categoryObjectIds };
     } else if (categories.length > 0 && categoryObjectIds.length === 0) {
@@ -34,8 +38,21 @@ export const getTools = async (req, res) => {
   if (search) {
     filters.name = { $regex: search, $options: 'i' };
   }
-  const toolsQuery = Tool.find(filters);
 
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    filters.pricePerDay = {};
+    if (minPrice !== undefined) {
+      filters.pricePerDay.$gte = Number(minPrice);
+    }
+    if (maxPrice !== undefined) {
+      filters.pricePerDay.$lte = Number(maxPrice);
+    }
+    if (Object.keys(filters.pricePerDay).length === 0) {
+      delete filters.pricePerDay;
+    }
+  }
+
+  const toolsQuery = Tool.find(filters);
   const [totalItems, tools] = await Promise.all([
     toolsQuery.clone().countDocuments(),
     toolsQuery.skip(skip).limit(limitNumber),

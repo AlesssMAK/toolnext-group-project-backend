@@ -41,6 +41,8 @@ export const getToolsSchema = {
         page: Joi.number().integer().min(1).default(1),
         limit: Joi.number().integer().min(5).max(20).default(10),
         categories: Joi.string().trim().allow(''),
-        search: Joi.string().trim().allow('')
+        search: Joi.string().trim().allow(''),
+        minPrice: Joi.number().min(0),
+        maxPrice: Joi.number().min(0)
     })
 };
