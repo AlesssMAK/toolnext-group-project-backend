@@ -19,6 +19,7 @@ const toolSchema = new Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
 
     description: {
@@ -29,6 +30,7 @@ const toolSchema = new Schema(
     pricePerDay: {
       type: Number,
       required: true,
+      min: 0,
     },
 
     images: {

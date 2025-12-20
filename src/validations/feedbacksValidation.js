@@ -6,7 +6,9 @@ export const getFeedbacksValidation = {
     perPage: Joi.number().integer().min(1).max(30).default(10),
     sortBy: Joi.string().valid('rate', 'createdAt').default('createdAt'),
     sortOrder: Joi.string().valid('asc', 'desc').default('desc'),
-  })
+    toolId: Joi.string(),
+    userId: Joi.string(),
+  }),
 };
 
 export const createFeedbackValidation = {
