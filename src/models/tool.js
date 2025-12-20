@@ -60,9 +60,8 @@ const toolSchema = new Schema(
 
     feedbacks: [
       {
-        userId: { type: Schema.Types.ObjectId, ref: 'User' },
-        comment: String,
-        rating: Number,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Feedback',
       },
     ],
   },
