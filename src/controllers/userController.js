@@ -104,6 +104,7 @@ export const getUserTools = async (req, res, next) => {
     const tools = await Tool.find({ owner: userId })
       // .populate('category', 'name')
       .populate('owner', 'name')
+      .populate('feedbacks')
       .skip(skip)
       .limit(perPage)
       .sort({ createdAt: -1 });
