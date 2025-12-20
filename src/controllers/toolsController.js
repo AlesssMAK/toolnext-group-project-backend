@@ -134,7 +134,7 @@ export const updateTool = async (req, res, next) => {
 
 export const getToolById = async (req, res, next) => {
   const { toolId } = req.params;
-  const tool = await Tool.findById(toolId);
+  const tool = await Tool.findById(toolId).populate('feedbacks');
 
   if (!tool) {
     next(createHttpError(404, 'Tool not found'));

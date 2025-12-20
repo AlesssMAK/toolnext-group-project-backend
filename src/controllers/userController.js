@@ -2,6 +2,7 @@ import createHttpError from 'http-errors';
 import { isValidObjectId } from 'mongoose';
 import { User } from '../models/user.js';
 import { Tool } from '../models/tool.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getUser = async (req, res, next) => {
   try {
@@ -30,7 +31,7 @@ export const getUser = async (req, res, next) => {
         id: userId,
         name: user.name,
         email: user.email,
-        avatar:user.avatar,
+        avatar: user.avatar,
         rating: Math.round(rating * 10) / 10,
         toolsCount,
       },
@@ -103,6 +104,7 @@ export const getUserTools = async (req, res, next) => {
     const tools = await Tool.find({ owner: userId })
       // .populate('category', 'name')
       .populate('owner', 'name')
+      .populate('feedbacks')
       .skip(skip)
       .limit(perPage)
       .sort({ createdAt: -1 });
@@ -125,4 +127,20 @@ export const getUserTools = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const updateUserAvatar = async (req, res, next) => {
+  if (!req.file) {
+    next(createHttpError(400, 'No file'));
+    return;
+  }
+
+  const result = await saveFileToCloudinary(req.file.buffer);
+
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { avatar: result.secure_url },
+    { new: true },
+  );
+  res.status(200).json({ url: user.avatar });
 };
