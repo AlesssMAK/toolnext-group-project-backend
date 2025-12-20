@@ -11,10 +11,22 @@ export const getFeedbacks = async (req, res, next) => {
       perPage = 10,
       sortBy = 'createdAt',
       sortOrder = 'desc',
+      toolId,
+      userId,
     } = req.query;
     const skip = (page - 1) * perPage;
 
-    const feedbacksQuery = Feedback.find();
+    const filter = {};
+
+    if (toolId) {
+      filter.toolId = toolId;
+    }
+
+    if (userId) {
+      filter.userId = userId;
+    }
+
+    const feedbacksQuery = Feedback.find(filter).sort({ createdAt: -1 });
 
     const [totalFeedbacks, feedbacks] = await Promise.all([
       feedbacksQuery.clone().countDocuments(),
@@ -23,6 +35,12 @@ export const getFeedbacks = async (req, res, next) => {
         .limit(perPage)
         .sort({ [sortBy]: sortOrder }),
     ]);
+
+    const count = await Feedback.countDocuments();
+    console.log('Feedback total:', count);
+
+    const one = await Feedback.findOne();
+    console.log(one);
 
     const totalPages = Math.ceil(totalFeedbacks / perPage);
 
@@ -91,12 +109,10 @@ export const createFeedback = async (req, res, next) => {
 
     await User.findByIdAndUpdate(ownerId, { rating: avgRating });
 
-    res
-      .status(201)
-      .json({
-        data: newFeedback,
-        ownerStats: { totalFeedbacks, ownerRating: avgRating },
-      });
+    res.status(201).json({
+      data: newFeedback,
+      ownerStats: { totalFeedbacks, ownerRating: avgRating },
+    });
   } catch (error) {
     next(error);
   }
