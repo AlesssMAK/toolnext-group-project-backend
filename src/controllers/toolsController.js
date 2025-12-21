@@ -68,6 +68,32 @@ export const getTools = async (req, res) => {
   });
 };
 
+function parseSpecifications(text) {
+  return text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .reduce((acc, line, index) => {
+      const separatorIndex = line.indexOf(':');
+
+      if (separatorIndex === -1) {
+        throw new Error(
+          `Invalid format in line ${index + 1}. Symbol ":" not found`,
+        );
+      }
+
+      const key = line.slice(0, separatorIndex).trim();
+      const value = line.slice(separatorIndex + 1).trim();
+
+      if (!key || !value) {
+        throw new Error(`Empty key or value in line ${index + 1}`);
+      }
+
+      acc[key] = value;
+      return acc;
+    }, {});
+}
+
 export const createTool = async (req, res, next) => {
   try {
     if (!req.file) {
@@ -80,14 +106,11 @@ export const createTool = async (req, res, next) => {
     let parsedSpecs = {};
     if (specifications) {
       try {
-        parsedSpecs =
-          typeof specifications === 'string'
-            ? JSON.parse(specifications)
-            : specifications;
-      } catch {
-        return res
-          .status(400)
-          .json({ message: 'Invalid JSON in specifications' });
+        parsedSpecs = parseSpecifications(specifications);
+      } catch (err) {
+        return res.status(400).json({
+          message: err.message || 'Invalid specifications format',
+        });
       }
     }
 

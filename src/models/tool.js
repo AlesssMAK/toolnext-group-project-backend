@@ -44,7 +44,8 @@ const toolSchema = new Schema(
     },
 
     specifications: {
-      type: Object,
+      type: Map,
+      of: String,
       default: {},
     },
 
