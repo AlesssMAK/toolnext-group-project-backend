@@ -141,23 +141,26 @@ export const updateTool = async (req, res, next) => {
       return next(createHttpError(403, 'Access denied: You are not the owner'));
     }
 
-    const { specifications, ...rest } = req.body;
+    const { specifications, imageUrl, ...rest } = req.body;
     const updateData = { ...rest };
 
     if (req.file) {
       const cloudinaryResponse = await saveFileToCloudinary(req.file.buffer);
       updateData.images = cloudinaryResponse.secure_url;
+    } else if (imageUrl) {
+      updateData.images = imageUrl;
     }
+
     if (specifications) {
       try {
-        updateData.specifications =
-          typeof specifications === 'string'
-            ? JSON.parse(specifications)
-            : specifications;
-      } catch {
-        return next(createHttpError(400, 'Invalid JSON in specifications'));
+        updateData.specifications = parseSpecifications(specifications);
+      } catch (err) {
+        return res.status(400).json({
+          message: err.message || 'Invalid specifications format',
+        });
       }
     }
+
     const updatedTool = await Tool.findByIdAndUpdate(toolId, updateData, {
       new: true,
       runValidators: true,

@@ -33,6 +33,7 @@ export const updateToolSchema = {
     description: Joi.string().min(20).max(2000),
     rentalTerms: Joi.string().min(20).max(1000),
     specifications: Joi.string().max(1000).optional().allow(''),
+    imageUrl: Joi.string().max(1000).optional(),
   }).min(1),
 };
 
