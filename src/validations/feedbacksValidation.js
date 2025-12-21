@@ -11,10 +11,10 @@ export const getFeedbacksValidation = {
   }),
 };
 
-export const createFeedbackValidation = {
-  [Segments.BODY]: Joi.object({
-    toolId: Joi.string().hex().length(24).required(),
-    description: Joi.string().min(3).max(1000).required(),
-    rate: Joi.number().min(1).max(5).precision(1).required(),
-  }),
+export const createFeedbackValidation={
+  [Segments.BODY]:Joi.object({
+    toolId:Joi.string().hex().length(24).required(),
+    description:Joi.string().min(3).max(1000).required(),
+    rate:Joi.number().min(1).max(5).precision(1).required(),
+  }).unknown(true),
 };

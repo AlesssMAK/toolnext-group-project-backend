@@ -56,64 +56,70 @@ export const getFeedbacks = async (req, res, next) => {
   }
 };
 
-export const createFeedback = async (req, res, next) => {
-  try {
-    const { toolId, description, rate } = req.body;
-    const userId = req.user?.id;
+export const createFeedback=async(req,res,next)=>{
+  try{
+    const {toolId,description,rate}=req.body;
+    const userId=req.user?.id;
 
-    if (!toolId || !description || rate === undefined || rate === null) {
-      throw createHttpError(
-        400,
-        'Missing required fields: toolId, description, rate',
-      );
+    if(!userId){
+      throw createHttpError(401,'Unauthorized');
     }
 
-    if (!mongoose.Types.ObjectId.isValid(toolId)) {
-      throw createHttpError(400, 'Invalid toolId');
+    if(!mongoose.Types.ObjectId.isValid(toolId)){
+      throw createHttpError(400,'Invalid toolId');
     }
 
-    const tool = await Tool.findById(toolId);
-    if (!tool) {
-      throw createHttpError(404, 'Tool not found');
+    const tool=await Tool.findById(toolId);
+    if(!tool){
+      throw createHttpError(404,'Tool not found');
     }
 
-    const newFeedback = await Feedback.create({
-      name: req.user?.name || 'Anonymous',
+    const name=req.user?.name||'Anonymous';
+
+    const newFeedback=await Feedback.create({
+      toolId,
+      userId,
+      name,
       description,
       rate,
     });
 
-    tool.feedbacks.push({ userId, comment: description, rating: rate });
+    tool.feedbacks.push(newFeedback._id);
     await tool.save();
 
-    const ownerId = tool.owner;
+    // якщо рейтинг власника = середнє по всіх відгуках до всіх інструментів цього owner:
+    const ownerId=tool.owner;
 
-    const agg = await Tool.aggregate([
-      { $match: { owner: ownerId } },
-      { $unwind: { path: '$feedbacks', preserveNullAndEmptyArrays: true } },
+    const agg=await Feedback.aggregate([
       {
-        $group: {
-          _id: null,
-          avgRating: { $avg: '$feedbacks.rating' },
-          totalFeedbacks: {
-            $sum: { $cond: [{ $ifNull: ['$feedbacks.rating', false] }, 1, 0] },
-          },
+        $lookup:{
+          from:'tools',
+          localField:'toolId',
+          foreignField:'_id',
+          as:'tool',
+        },
+      },
+      { $unwind:'$tool' },
+      { $match:{ 'tool.owner':ownerId } },
+      {
+        $group:{
+          _id:null,
+          avgRating:{ $avg:'$rate' },
+          totalFeedbacks:{ $sum:1 },
         },
       },
     ]);
 
-    const avgRating = agg[0]?.avgRating
-      ? Number(agg[0].avgRating.toFixed(2))
-      : 0;
-    const totalFeedbacks = agg[0]?.totalFeedbacks || 0;
+    const avgRating=agg[0]?.avgRating?Number(agg[0].avgRating.toFixed(2)):0;
+    const totalFeedbacks=agg[0]?.totalFeedbacks||0;
 
-    await User.findByIdAndUpdate(ownerId, { rating: avgRating });
+    await User.findByIdAndUpdate(ownerId,{ rating:avgRating });
 
     res.status(201).json({
-      data: newFeedback,
-      ownerStats: { totalFeedbacks, ownerRating: avgRating },
+      data:newFeedback,
+      ownerStats:{ totalFeedbacks,ownerRating:avgRating },
     });
-  } catch (error) {
+  }catch(error){
     next(error);
   }
 };
