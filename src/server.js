@@ -26,7 +26,7 @@ app.use(logger);
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:3000'],
+    origin: ['https://toolnext-group-project-frontend.vercel.app'],
     credentials: true,
   }),
 );

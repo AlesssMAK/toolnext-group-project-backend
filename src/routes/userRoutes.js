@@ -5,6 +5,7 @@ import {
   getUserProfile,
   getUserTools,
   updateUserAvatar,
+  getUserFeedbacks,
 } from '../controllers/userController.js';
 import { upload } from '../middleware/multer.js';
 
@@ -14,6 +15,12 @@ router.get('/api/users/me', authenticate, getUser);
 router.get('/api/users/:userId', getUserProfile);
 
 router.get('/api/users/:userId/tools', getUserTools);
-router.patch('/api/users/me/avatar', authenticate, upload.single('avatar'), updateUserAvatar);
+router.get('/api/users/:userId/feedbacks', getUserFeedbacks);
+router.patch(
+  '/api/users/me/avatar',
+  authenticate,
+  upload.single('avatar'),
+  updateUserAvatar,
+);
 
 export default router;

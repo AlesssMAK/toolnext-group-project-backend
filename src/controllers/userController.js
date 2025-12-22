@@ -2,7 +2,9 @@ import createHttpError from 'http-errors';
 import { isValidObjectId } from 'mongoose';
 import { User } from '../models/user.js';
 import { Tool } from '../models/tool.js';
+
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { Feedback } from '../models/feedback.js';
 
 export const getUser = async (req, res, next) => {
   try {
@@ -143,4 +145,70 @@ export const updateUserAvatar = async (req, res, next) => {
     { new: true },
   );
   res.status(200).json({ url: user.avatar });
+};
+
+export const getUserFeedbacks = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10;
+    const sortBy = req.query.sortBy || 'createdAt';
+    const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
+
+    if (!isValidObjectId(userId)) {
+      return next(createHttpError(400, 'Invalid user ID format'));
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(createHttpError(404, 'User not found'));
+    }
+
+    const userTools = await Tool.find({ owner: userId }).select('_id');
+    const toolIds = userTools.map((tool) => tool._id);
+
+    if (!toolIds.length) {
+      return res.status(200).json({
+        data: {
+          feedbacks: [],
+          pagination: {
+            currentPage: page,
+            perPage,
+            totalFeedbacks: 0,
+            totalPages: 0,
+          },
+        },
+      });
+    }
+
+    const skip = (page - 1) * perPage;
+
+    const feedbacks = await Feedback.find({ toolId: { $in: toolIds } })
+      .populate('userId', 'name')
+      .populate('toolId', 'name')
+      .sort({ [sortBy]: sortOrder })
+      .skip(skip)
+      .limit(perPage);
+
+    const totalFeedbacks = await Feedback.countDocuments({
+      toolId: { $in: toolIds },
+    });
+
+    const totalPages = Math.ceil(totalFeedbacks / perPage);
+
+    res.status(200).json({
+      data: {
+        feedbacks,
+        pagination: {
+          currentPage: page,
+          perPage,
+          totalFeedbacks,
+          totalPages,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
 };
