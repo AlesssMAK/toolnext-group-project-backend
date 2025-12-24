@@ -58,7 +58,7 @@ export const getFeedbacks = async (req, res, next) => {
 
 export const createFeedback=async(req,res,next)=>{
   try{
-    const {toolId,description,rate}=req.body;
+    const {name,toolId,description,rate}=req.body;
     const userId=req.user?.id;
 
     if(!userId){
@@ -73,8 +73,6 @@ export const createFeedback=async(req,res,next)=>{
     if(!tool){
       throw createHttpError(404,'Tool not found');
     }
-
-    const name=req.user?.name||'Anonymous';
 
     const newFeedback=await Feedback.create({
       toolId,

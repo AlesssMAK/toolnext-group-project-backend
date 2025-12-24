@@ -45,8 +45,6 @@ export const getUserProfile = async (req, res, next) => {
   try {
     const { userId } = req.params;
 
-    console.log('🔍 GET /api/users/:userId - userId param:', userId);
-
     if (!isValidObjectId(userId)) {
       return next(createHttpError(400, 'Invalid user ID format'));
     }

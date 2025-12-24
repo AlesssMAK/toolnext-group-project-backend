@@ -4,7 +4,7 @@ const feedbackSchema = new Schema(
   {
     name: {
       type: String,
-      required: false,
+      required: true,
     },
     description: {
       type: String,
