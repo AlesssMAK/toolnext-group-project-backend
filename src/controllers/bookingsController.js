@@ -37,7 +37,7 @@ export const createBooking = async (req, res, next) => {
 
     if (overlappingBooking) {
       return next(
-        createHttpError(400, 'Tool is already booked for these dates'),
+        createHttpError(409, 'Tool is already booked for these dates'),
       );
     }
 
