@@ -226,35 +226,49 @@
  *
  *     Feedback:
  *       type: object
+ *       required:
+ *         - name
+ *         - description
+ *         - rate
+ *         - userId
+ *         - toolId
  *       properties:
  *         _id:
  *           type: string
  *           description: Auto-generated feedback ID
- *           example: 507f1f77bcf86cd799439015
+ *           example: 64f0c2e1b9a1c2a1a1234573
  *         toolId:
  *           type: string
  *           description: ID of the tool
- *           example: 507f1f77bcf86cd799439012
+ *           example: 64f0c2b0b9a1c2a1a1234568
  *         userId:
  *           type: string
  *           description: ID of the user who left feedback
- *           example: 507f1f77bcf86cd799439011
- *         rating:
+ *           example: 64f0c2a9b9a1c2a1a1234567
+ *         name:
+ *           type: string
+ *           description: Name of the feedback author
+ *           example: John Doe
+ *         description:
+ *           type: string
+ *           description: Feedback comment
+ *           example: Great tool, works perfectly!
+ *         rate:
  *           type: number
  *           minimum: 1
  *           maximum: 5
  *           description: Rating from 1 to 5
  *           example: 5
- *         comment:
- *           type: string
- *           description: Feedback comment
- *           example: Great tool, works perfectly!
  *         createdAt:
  *           type: string
  *           format: date-time
+ *           description: Feedback creation timestamp
+ *           example: 2025-12-28T12:34:56Z
  *         updatedAt:
  *           type: string
  *           format: date-time
+ *           description: Feedback last update timestamp
+ *           example: 2025-12-28T12:34:56Z
  *
  *     Error:
  *       type: object
