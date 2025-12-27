@@ -74,7 +74,7 @@
  *               toolAlreadyBooked:
  *                 summary: Tool already booked
  *                 value:
- *                   statusCode: 400
+ *                   statusCode: 409
  *                   message: Tool is already booked for these dates
  *
  *       401:

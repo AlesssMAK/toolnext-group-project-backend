@@ -7,12 +7,11 @@
  *       required:
  *         - name
  *         - email
- *         - password
  *       properties:
  *         _id:
  *           type: string
  *           description: Auto-generated user ID
- *           example: 507f1f77bcf86cd799439011
+ *           example: 64f0c2a9b9a1c2a1a1234567
  *         name:
  *           type: string
  *           description: User's name
@@ -22,11 +21,6 @@
  *           format: email
  *           description: User's email address
  *           example: john.doe@example.com
- *         password:
- *           type: string
- *           format: password
- *           description: User's hashed password
- *           example: $2b$10$...
  *         role:
  *           type: string
  *           enum: [user, admin]
@@ -45,16 +39,22 @@
  *           example: 3
  *         avatar:
  *           type: string
- *           description: User's avatar URL or initial
+ *           description: User's avatar (URL or initial)
  *           example: J
+ *         avatarUrl:
+ *           type: string
+ *           description: Optional avatar URL if uploaded
+ *           example: https://res.cloudinary.com/demo/avatar.jpg
  *         createdAt:
  *           type: string
  *           format: date-time
  *           description: User registration timestamp
+ *           example: 2025-12-28T12:34:56Z
  *         updatedAt:
  *           type: string
  *           format: date-time
  *           description: Last update timestamp
+ *           example: 2025-12-28T12:34:56Z
  *
  *     Tool:
  *       type: object
@@ -69,15 +69,15 @@
  *         _id:
  *           type: string
  *           description: Auto-generated tool ID
- *           example: 507f1f77bcf86cd799439012
+ *           example: 64f0c2b0b9a1c2a1a1234568
  *         owner:
  *           type: string
  *           description: ID of the tool owner
- *           example: 507f1f77bcf86cd799439011
+ *           example: 64f0c2a9b9a1c2a1a1234567
  *         category:
  *           type: string
  *           description: ID of the tool category
- *           example: 507f1f77bcf86cd799439013
+ *           example: 64f0c2b0b9a1c2a1a1234569
  *         name:
  *           type: string
  *           description: Tool name
@@ -101,18 +101,36 @@
  *           example: 4.7
  *         specifications:
  *           type: object
- *           description: Tool specifications
+ *           additionalProperties:
+ *             type: string
+ *           description: Tool specifications as key-value pairs
  *           example: { power: "18V", weight: "1.5kg" }
  *         rentalTerms:
  *           type: string
  *           description: Rental terms and conditions
  *           example: Minimum rental period is 1 day
+ *         bookedDates:
+ *           type: array
+ *           items:
+ *             type: string
+ *             description: Booking IDs for the tool
+ *             example: 64f0c2c1b9a1c2a1a1234570
+ *         feedbacks:
+ *           type: array
+ *           items:
+ *             type: string
+ *             description: Feedback IDs for the tool
+ *             example: 64f0c2c1b9a1c2a1a1234571
  *         createdAt:
  *           type: string
  *           format: date-time
+ *           description: Tool creation timestamp
+ *           example: 2025-12-28T12:34:56Z
  *         updatedAt:
  *           type: string
  *           format: date-time
+ *           description: Tool last update timestamp
+ *           example: 2025-12-28T12:34:56Z
  *
  *     Booking:
  *       type: object
@@ -130,15 +148,15 @@
  *         _id:
  *           type: string
  *           description: Auto-generated booking ID
- *           example: 507f1f77bcf86cd799439014
+ *           example: 64f0c2d1b9a1c2a1a1234572
  *         toolId:
  *           type: string
  *           description: ID of the booked tool
- *           example: 507f1f77bcf86cd799439012
+ *           example: 64f0c2b0b9a1c2a1a1234568
  *         userId:
  *           type: string
  *           description: ID of the user who made the booking (optional)
- *           example: 507f1f77bcf86cd799439011
+ *           example: 64f0c2a9b9a1c2a1a1234567
  *         date:
  *           type: string
  *           description: Booking date
@@ -184,65 +202,73 @@
  *         createdAt:
  *           type: string
  *           format: date-time
+ *           description: Booking creation timestamp
+ *           example: 2025-12-28T12:34:56Z
  *         updatedAt:
  *           type: string
  *           format: date-time
+ *           description: Booking last update timestamp
+ *           example: 2025-12-28T12:34:56Z
  *
  *     Category:
  *       type: object
  *       required:
- *         - name
+ *         - title
  *       properties:
  *         _id:
  *           type: string
  *           description: Auto-generated category ID
- *           example: 507f1f77bcf86cd799439013
- *         name:
+ *           example: 64f0c2bfb9a1c2a1a1234569
+ *         title:
  *           type: string
- *           description: Category name
+ *           description: Category title
  *           example: Power Tools
- *         description:
- *           type: string
- *           description: Category description
- *           example: Electric and battery-powered tools
- *         createdAt:
- *           type: string
- *           format: date-time
- *         updatedAt:
- *           type: string
- *           format: date-time
  *
  *     Feedback:
  *       type: object
+ *       required:
+ *         - name
+ *         - description
+ *         - rate
+ *         - userId
+ *         - toolId
  *       properties:
  *         _id:
  *           type: string
  *           description: Auto-generated feedback ID
- *           example: 507f1f77bcf86cd799439015
+ *           example: 64f0c2e1b9a1c2a1a1234573
  *         toolId:
  *           type: string
  *           description: ID of the tool
- *           example: 507f1f77bcf86cd799439012
+ *           example: 64f0c2b0b9a1c2a1a1234568
  *         userId:
  *           type: string
  *           description: ID of the user who left feedback
- *           example: 507f1f77bcf86cd799439011
- *         rating:
+ *           example: 64f0c2a9b9a1c2a1a1234567
+ *         name:
+ *           type: string
+ *           description: Name of the feedback author
+ *           example: John Doe
+ *         description:
+ *           type: string
+ *           description: Feedback comment
+ *           example: Great tool, works perfectly!
+ *         rate:
  *           type: number
  *           minimum: 1
  *           maximum: 5
  *           description: Rating from 1 to 5
  *           example: 5
- *         comment:
- *           type: string
- *           description: Feedback comment
- *           example: Great tool, works perfectly!
  *         createdAt:
  *           type: string
  *           format: date-time
+ *           description: Feedback creation timestamp
+ *           example: 2025-12-28T12:34:56Z
  *         updatedAt:
  *           type: string
  *           format: date-time
+ *           description: Feedback last update timestamp
+ *           example: 2025-12-28T12:34:56Z
  *
  *     Error:
  *       type: object
