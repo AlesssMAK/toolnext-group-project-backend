@@ -5,7 +5,7 @@ const bookingSchema = new Schema(
   {
     toolId: {
       type: Schema.Types.ObjectId,
-      ref: 'Tools',
+      ref: 'Tool',
       required: true,
     },
     userId: {
