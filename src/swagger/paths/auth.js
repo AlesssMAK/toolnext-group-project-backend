@@ -51,7 +51,7 @@
  *                       type: string
  *                       example: John Doe
  *
- *       400:
+ *       409:
  *         description: Email already in use
  *         content:
  *           application/json:
