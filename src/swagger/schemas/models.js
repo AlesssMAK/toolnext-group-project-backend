@@ -7,12 +7,11 @@
  *       required:
  *         - name
  *         - email
- *         - password
  *       properties:
  *         _id:
  *           type: string
  *           description: Auto-generated user ID
- *           example: 507f1f77bcf86cd799439011
+ *           example: 64f0c2a9b9a1c2a1a1234567
  *         name:
  *           type: string
  *           description: User's name
@@ -22,11 +21,6 @@
  *           format: email
  *           description: User's email address
  *           example: john.doe@example.com
- *         password:
- *           type: string
- *           format: password
- *           description: User's hashed password
- *           example: $2b$10$...
  *         role:
  *           type: string
  *           enum: [user, admin]
@@ -45,16 +39,22 @@
  *           example: 3
  *         avatar:
  *           type: string
- *           description: User's avatar URL or initial
+ *           description: User's avatar (URL or initial)
  *           example: J
+ *         avatarUrl:
+ *           type: string
+ *           description: Optional avatar URL if uploaded
+ *           example: https://res.cloudinary.com/demo/avatar.jpg
  *         createdAt:
  *           type: string
  *           format: date-time
  *           description: User registration timestamp
+ *           example: 2025-12-28T12:34:56Z
  *         updatedAt:
  *           type: string
  *           format: date-time
  *           description: Last update timestamp
+ *           example: 2025-12-28T12:34:56Z
  *
  *     Tool:
  *       type: object
