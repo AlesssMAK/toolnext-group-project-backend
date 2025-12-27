@@ -56,8 +56,8 @@ const toolSchema = new Schema(
 
     bookedDates: [
       {
-        startDate: { type: String },
-        endDate: { type: String },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Booking',
       },
     ],
 

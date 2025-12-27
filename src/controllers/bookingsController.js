@@ -61,6 +61,9 @@ export const createBooking = async (req, res, next) => {
       status: autoStatus,
     });
 
+    tool.bookedDates.push(newBooking._id);
+    await tool.save();
+
     res.status(201).json(newBooking);
   } catch (error) {
     next(error);
