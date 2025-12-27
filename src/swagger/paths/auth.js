@@ -240,4 +240,46 @@
  *             example:
  *               statusCode: 404
  *               message: User not found
+ *
+ * /api/auth/request-reset-email:
+ *   post:
+ *     summary: Request a password reset email
+ *     tags: [Auth]
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: john.doe@example.com
+ *                 description: Email address of the user requesting a password reset
+ *     responses:
+ *       200:
+ *         description: Reset email sent (or silently ignored if email does not exist)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: If this email exists, a reset link has been sent
+ *
+ *       500:
+ *         description: Failed to send email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               statusCode: 500
+ *               message: Failed to send the email, please try again later.
  */
