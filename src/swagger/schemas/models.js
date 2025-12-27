@@ -69,15 +69,15 @@
  *         _id:
  *           type: string
  *           description: Auto-generated tool ID
- *           example: 507f1f77bcf86cd799439012
+ *           example: 64f0c2b0b9a1c2a1a1234568
  *         owner:
  *           type: string
  *           description: ID of the tool owner
- *           example: 507f1f77bcf86cd799439011
+ *           example: 64f0c2a9b9a1c2a1a1234567
  *         category:
  *           type: string
  *           description: ID of the tool category
- *           example: 507f1f77bcf86cd799439013
+ *           example: 64f0c2b0b9a1c2a1a1234569
  *         name:
  *           type: string
  *           description: Tool name
@@ -101,18 +101,36 @@
  *           example: 4.7
  *         specifications:
  *           type: object
- *           description: Tool specifications
+ *           additionalProperties:
+ *             type: string
+ *           description: Tool specifications as key-value pairs
  *           example: { power: "18V", weight: "1.5kg" }
  *         rentalTerms:
  *           type: string
  *           description: Rental terms and conditions
  *           example: Minimum rental period is 1 day
+ *         bookedDates:
+ *           type: array
+ *           items:
+ *             type: string
+ *             description: Booking IDs for the tool
+ *             example: 64f0c2c1b9a1c2a1a1234570
+ *         feedbacks:
+ *           type: array
+ *           items:
+ *             type: string
+ *             description: Feedback IDs for the tool
+ *             example: 64f0c2c1b9a1c2a1a1234571
  *         createdAt:
  *           type: string
  *           format: date-time
+ *           description: Tool creation timestamp
+ *           example: 2025-12-28T12:34:56Z
  *         updatedAt:
  *           type: string
  *           format: date-time
+ *           description: Tool last update timestamp
+ *           example: 2025-12-28T12:34:56Z
  *
  *     Booking:
  *       type: object
