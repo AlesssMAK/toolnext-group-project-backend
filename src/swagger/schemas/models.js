@@ -148,15 +148,15 @@
  *         _id:
  *           type: string
  *           description: Auto-generated booking ID
- *           example: 507f1f77bcf86cd799439014
+ *           example: 64f0c2d1b9a1c2a1a1234572
  *         toolId:
  *           type: string
  *           description: ID of the booked tool
- *           example: 507f1f77bcf86cd799439012
+ *           example: 64f0c2b0b9a1c2a1a1234568
  *         userId:
  *           type: string
  *           description: ID of the user who made the booking (optional)
- *           example: 507f1f77bcf86cd799439011
+ *           example: 64f0c2a9b9a1c2a1a1234567
  *         date:
  *           type: string
  *           description: Booking date
@@ -202,9 +202,13 @@
  *         createdAt:
  *           type: string
  *           format: date-time
+ *           description: Booking creation timestamp
+ *           example: 2025-12-28T12:34:56Z
  *         updatedAt:
  *           type: string
  *           format: date-time
+ *           description: Booking last update timestamp
+ *           example: 2025-12-28T12:34:56Z
  *
  *     Category:
  *       type: object
