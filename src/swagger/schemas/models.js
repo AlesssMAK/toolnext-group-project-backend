@@ -213,26 +213,16 @@
  *     Category:
  *       type: object
  *       required:
- *         - name
+ *         - title
  *       properties:
  *         _id:
  *           type: string
  *           description: Auto-generated category ID
- *           example: 507f1f77bcf86cd799439013
- *         name:
+ *           example: 64f0c2bfb9a1c2a1a1234569
+ *         title:
  *           type: string
- *           description: Category name
+ *           description: Category title
  *           example: Power Tools
- *         description:
- *           type: string
- *           description: Category description
- *           example: Electric and battery-powered tools
- *         createdAt:
- *           type: string
- *           format: date-time
- *         updatedAt:
- *           type: string
- *           format: date-time
  *
  *     Feedback:
  *       type: object
