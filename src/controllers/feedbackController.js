@@ -58,7 +58,7 @@ export const getFeedbacks = async (req, res, next) => {
 
 export const createFeedback = async (req, res, next) => {
   try {
-    const { name, toolId, description, rate } = req.body;
+    const { toolId, description, rate } = req.body;
     const userId = req.user?.id;
 
     if (!userId) {
@@ -86,7 +86,7 @@ export const createFeedback = async (req, res, next) => {
     const newFeedback = await Feedback.create({
       toolId,
       userId,
-      name,
+      name: req.user.name,
       description,
       rate,
     });
