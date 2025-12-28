@@ -114,13 +114,13 @@
  *           items:
  *             type: string
  *             description: Booking IDs for the tool
- *             example: 64f0c2c1b9a1c2a1a1234570
+ *           example: []
  *         feedbacks:
  *           type: array
  *           items:
  *             type: string
  *             description: Feedback IDs for the tool
- *             example: 64f0c2c1b9a1c2a1a1234571
+ *           example: []
  *         createdAt:
  *           type: string
  *           format: date-time
