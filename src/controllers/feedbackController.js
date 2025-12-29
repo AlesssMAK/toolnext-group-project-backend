@@ -92,6 +92,30 @@ export const createFeedback = async (req, res, next) => {
     });
 
     tool.feedbacks.push(newFeedback._id);
+    // 🔥 NEW — перерахунок рейтингу КОНКРЕТНОГО TOOL
+    const toolAgg = await Feedback.aggregate([
+      {
+        $match: {
+          toolId: new mongoose.Types.ObjectId(toolId),
+        },
+      },
+      {
+        $group: {
+          _id: '$toolId',
+          avgRating: { $avg: '$rate' },
+          totalFeedbacks: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const toolRating = toolAgg[0]?.avgRating
+      ? Number(toolAgg[0].avgRating.toFixed(2))
+      : 0;
+
+    const toolFeedbacksCount = toolAgg[0]?.totalFeedbacks || 0;
+
+    tool.rating = toolRating;
+    tool.feedbacksCount = toolFeedbacksCount;
     await tool.save();
 
     // якщо рейтинг власника = середнє по всіх відгуках до всіх інструментів цього owner:
