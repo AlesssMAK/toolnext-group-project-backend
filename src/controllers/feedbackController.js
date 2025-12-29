@@ -108,15 +108,12 @@ export const createFeedback = async (req, res, next) => {
       },
     ]);
 
-    // 🔥 NEW
     const toolRating = toolAgg[0]?.avgRating
       ? Number(toolAgg[0].avgRating.toFixed(2))
       : 0;
 
-    // 🔥 NEW
     const toolFeedbacksCount = toolAgg[0]?.totalFeedbacks || 0;
 
-    // 🔥 NEW — зберігаємо рейтинг у tool
     tool.rating = toolRating;
     tool.feedbacksCount = toolFeedbacksCount;
     await tool.save();
