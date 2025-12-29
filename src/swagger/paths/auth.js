@@ -188,8 +188,6 @@
  *   post:
  *     summary: Reset user password
  *     tags: [Auth]
- *     security:
- *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -245,8 +243,6 @@
  *   post:
  *     summary: Request a password reset email
  *     tags: [Auth]
- *     security:
- *       - cookieAuth: []
  *     requestBody:
  *       required: true
  *       content:

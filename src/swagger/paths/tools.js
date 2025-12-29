@@ -16,28 +16,51 @@
  *         name: page
  *         schema:
  *           type: integer
+ *           minimum: 1
  *           default: 1
  *         description: Page number
+ *
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
+ *           minimum: 1
  *           default: 10
- *         description: Items per page
+ *         description: Number of items per page
+ *
  *       - in: query
  *         name: categories
  *         schema:
  *           type: string
- *         description: Comma-separated category ObjectIds
+ *         description: Comma-separated list of category ObjectIds
  *         example: 6704d9c7f1a3b8c2d5e4f6a0,6704d9c7f1a3b8c2d5e4f6a1
+ *
  *       - in: query
  *         name: search
  *         schema:
  *           type: string
  *         description: Search by tool name (case-insensitive)
+ *         example: drill
+ *
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: number
+ *           minimum: 0
+ *         description: Minimum price per day
+ *         example: 10
+ *
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: number
+ *           minimum: 0
+ *         description: Maximum price per day
+ *         example: 100
+ *
  *     responses:
  *       200:
- *         description: Tools list
+ *         description: Successfully retrieved tools list
  *         content:
  *           application/json:
  *             schema:
@@ -45,12 +68,16 @@
  *               properties:
  *                 page:
  *                   type: integer
+ *                   example: 1
  *                 limit:
  *                   type: integer
+ *                   example: 10
  *                 totalItems:
  *                   type: integer
+ *                   example: 42
  *                 totalPages:
  *                   type: integer
+ *                   example: 5
  *                 tools:
  *                   type: array
  *                   items:
